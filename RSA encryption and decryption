@@ -1,22 +1,19 @@
-from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP
-import binascii
-
-keyPair = RSA.generate(1024)
-pubKey = keyPair.publickey()
-
-# Print public key
-print(f"Public key: (n={hex(pubKey.n)}, e={hex(pubKey.e)})")
-pubKeyPEM = pubKey.exportKey()
-print(pubKeyPEM.decode('ascii'))
-
-# Print private key
-print(f"Private key: (n={hex(pubKey.n)}, d={hex(keyPair.d)})")
-privKeyPEM = keyPair.exportKey()
-print(privKeyPEM.decode('ascii'))
-
-# Encryption
-msg = 'Ismile Academy'
-encryptor = PKCS1_OAEP.new(pubKey)
-encrypted = encryptor.encrypt(msg.encode('utf-8'))
-print("Encrypted:", binascii.hexlify(encrypted).decode('ascii'))
+from math import gcd
+def RSA(p: int, q: int, message: int):
+    n = p * q
+    t = (p - 1) * (q - 1)
+    for e in range(2, t):
+        if gcd(e, t) == 1:
+            break
+    j = 0
+    while True:
+        if (j * e) % t == 1:
+            d = j
+            break
+        j += 1
+    ct = (message ** e) % n
+    print(f"Encrypted message is {ct}")
+    mes = (ct ** d) % n
+    print(f"Decrypted message is {mes}")
+RSA(p=13, q=17, message=22)
+RSA(p=19, q=23, message=23)
