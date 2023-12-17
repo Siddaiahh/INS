@@ -1,0 +1,16 @@
+def get_char_value(x):
+    return ord(x) - ord('a')
+def get_number_value(x):
+    return chr(x + ord('a'))
+def vernam_cipher(plain_text, one_time_pad):
+    if len(one_time_pad) != len(plain_text):
+        print("Invalid One-Time Pad application. Terminate.")
+        return None
+    return ''.join(get_number_value((get_char_value(char) + get_char_value(pad_char)) % 26)
+                   for char, pad_char in zip(plain_text, one_time_pad))
+def main():
+    accept, pad = input("Enter Your Plain Text:\n").lower(), input("Enter Your One-time Pad:\n").lower()
+    cipher_text = vernam_cipher(accept, pad)
+    print("Cipher Text is:", cipher_text) if cipher_text else None
+if __name__ == "__main__":
+    main()
